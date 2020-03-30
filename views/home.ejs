@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Lab8</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <h1 class="jumbotron">US Geography Quiz</h1>
+        
+        <form>
+            <div class="form-group">
+                <label for="californiaCapital">What is the capital of California?</label>
+                <input name="californiaCapital" type="text" class="form-control" id="californiaCapital">
+            </div>
+            
+            <div class="form-group">
+                <label for"longestRiver">What is the longest river in the US?</label>
+                <select name="longestRvier" id="longestRiver" class="form-control">
+                    <option value="">Select One</option>
+                    <option value ="ms">Mississippi</option>
+                    <option value ="mo">Missouri</option>
+                    <option value ="co">Colorado</option>
+                    <option value ="de">Delaware</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="mountRushmore">What Presidents are carved into mount Rushmore?</label>
+                <div id="mountRushmore">   
+                    <input id="jackson" type="checkbox" value="jackson"> <label for="jackson">A. Jackson</label>
+                    <input id="franklin" type="checkbox" value="franklin"> <label for="franklin">B. Franklin</label>
+                    <input id="jefferson" type="checkbox" value="jefferson"> <label for="jefferson">T. Jefferson</label>
+                    <input id="roosevelt" type="checkbox" value="roosevelt"> <label for="roosevelt">T. Roosevelt</label>
+                </div>
+            </div>
+            
+            
+            <div class="form-group">
+                <button id="submit" type="button" class="form-control btn btn-primary">Submit</button>
+            </div>
+            
+        </form>
+        <script>
+            
+            $("#submit").on('click', function(){
+               var complete = true;
+               var californiaCapital = $("#californiaCapital").val();
+               var presidents = [];
+               if ( $("#jackson").is(":checked") ) presidents.push("jackson");
+               if ( $("#franklin").is(":checked") ) presidents.push("franklin");
+               if ( $("#jefferson").is(":checked") ) presidents.push("jefferson");
+               if ( $("#roosevelt").is(":checked") ) presidents.push("roosevelt");
+               var longestRiver = $("#longestRiver").val();
+               
+               console.log(californiaCapital)
+               console.log(longestRiver)
+               console.log(presidents)
+               
+               if (californiaCapital == "" || longestRiver == "" || presidents.length == 0){
+                   alert("Please Fill All Fields");
+                   return;
+               }
+               
+               $.ajax({
+                    type: "POST",
+                    url: "/",
+                    datatype: "json",
+                    data: { 
+                        "california": californiaCapital, 
+                        "river": longestRiver, 
+                        "presidents" : presidents,
+                    },
+                    success: function(data, status){
+                        console.log(data.california);
+                    }      
+               });
+                
+                
+            });
+        </script>
+    </body>
+</html>
